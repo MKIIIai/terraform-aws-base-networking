@@ -1,5 +1,5 @@
 resource "aws_eip" "nat" {
-  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
+  for_each = local.include_nat_gateways == "yes" ? local.az_map : {}
 
   domain = "vpc"
 
@@ -11,7 +11,7 @@ resource "aws_eip" "nat" {
 }
 
 resource "aws_nat_gateway" "base" {
-  count = local.include_nat_gateways == "yes" ? length(var.availability_zones) : 0
+  for_each = local.include_nat_gateways == "yes" ? local.az_map : {}
 
   allocation_id = element(aws_eip.nat.*.id, count.index)
   subnet_id     = element(aws_subnet.public.*.id, count.index)

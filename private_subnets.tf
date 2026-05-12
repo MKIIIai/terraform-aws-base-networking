@@ -13,6 +13,8 @@ resource "aws_subnet" "private" {
 }
 
 resource "aws_route_table" "private" {
+  for_each = local.az_map
+
   vpc_id = aws_vpc.base.id
   count  = length(var.availability_zones)
 
