@@ -10,47 +10,47 @@ output "vpc_cidr" {
 
 output "availability_zones" {
   description = "The availability zones in which subnets were created."
-  value       = local.availability_zones
+  value       = var.availability_zones
 }
 
 output "number_of_availability_zones" {
   description = "The number of populated availability zones available."
-  value       = length(local.availability_zones)
+  value       = length(var.availability_zones)
 }
 
 output "public_subnet_ids" {
   description = "The IDs of the public subnets."
-  value       = [for az in local.availability_zones : aws_subnet.public[az].id]
+  value       = aws_subnet.public.*.id
 }
 
 output "public_subnet_cidr_blocks" {
   description = "The CIDRs of the public subnets."
-  value       = [for az in local.availability_zones : aws_subnet.public[az].cidr_block]
+  value       = aws_subnet.public.*.cidr_block
 }
 
 output "public_route_table_ids" {
   description = "The IDs of the public route tables."
-  value       = [for az in local.availability_zones : aws_route_table.public[az].id]
+  value       = aws_route_table.public.*.id
 }
 
 output "private_subnet_ids" {
   description = "The IDs of the private subnets."
-  value       = [for az in local.availability_zones : aws_subnet.private[az].id]
+  value       = aws_subnet.private.*.id
 }
 
 output "private_subnet_cidr_blocks" {
   description = "The CIDRs of the private subnets."
-  value       = [for az in local.availability_zones : aws_subnet.private[az].cidr_block]
+  value       = aws_subnet.private.*.cidr_block
 }
 
 output "private_route_table_ids" {
   description = "The IDs of the private route tables."
-  value       = [for az in local.availability_zones : aws_route_table.private[az].id]
+  value       = aws_route_table.private.*.id
 }
 
 output "nat_public_ips" {
   description = "The EIPs attached to the NAT gateways."
-  value       = local.include_nat_gateways == "yes" ? [for az in local.availability_zones : aws_eip.nat[az].public_ip] : []
+  value       = aws_eip.nat.*.public_ip
 }
 
 output "internet_gateway_id" {

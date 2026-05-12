@@ -8,26 +8,7 @@ variable "region" {
 }
 variable "availability_zones" {
   type        = list(string)
-  description = "The availability zones for which to add subnets. Mutually exclusive with availability_zone_configurations."
-  default     = null
-}
-
-variable "availability_zone_configurations" {
-  type = list(object({
-    zone                = string
-    public_subnet_cidr  = string
-    private_subnet_cidr = string
-  }))
-  description = <<-DESC
-    Explicit availability zone configurations with CIDR blocks. Mutually exclusive with availability_zones.
-    Use this to specify exact CIDR blocks for each subnet, allowing you to add new AZs without
-    changing existing subnet CIDR allocations. Example: [{
-      zone = "us-east-1a"
-      public_subnet_cidr = "10.0.0.0/24"
-      private_subnet_cidr = "10.0.10.0/24"
-    }]
-  DESC
-  default     = null
+  description = "The availability zones for which to add subnets."
 }
 
 variable "component" {
@@ -52,7 +33,7 @@ variable "public_subnets_offset" {
 variable "private_subnets_offset" {
   description = "The number of /24s to offset the private subnets in the VPC CIDR."
   type        = number
-  default     = 128
+  default     = 0
 }
 
 variable "include_route53_zone_association" {
